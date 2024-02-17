@@ -35,19 +35,20 @@ def make_index_dict(label_csv):
         csv_reader = csv.DictReader(f)
         line_count = 0
         for row in csv_reader:
-            index_lookup[row['mid']] = row['index']
+            index_lookup[row['display_name']] = row['index']
             line_count += 1
     return index_lookup
 
 
 class AudiosetDataset(Dataset):
     def __init__(self, args, transform, loader):
-        self.audio_root = '/apdcephfs_cq3/share_1311970/downstream_datasets/Audio/audioset/eval_segments'
-        dataset_json_file = '/apdcephfs_cq3/share_1311970/downstream_datasets/Audio/audioset/filter_eval.json'
-        label_csv = '/apdcephfs_cq3/share_1311970/downstream_datasets/Audio/audioset/class_labels_indices.csv'
+        self.audio_root = '/gallery_tate/jaehyuk.sung/sed/datasets/audioset201906/Fast-Audioset-Download/'
+        dataset_json_file = '/gallery_tate/jaehyuk.sung/sed/datasets/audioset201906/Fast-Audioset-Download/audioset_eval_metadata_convert.json'
+        label_csv = '/gallery_tate/jaehyuk.sung/sed/datasets/audioset201906/metadata/class_labels_indices_change.csv'
         with open(dataset_json_file, 'r') as fp:
             data_json = json.load(fp)
-        self.data = data_json['data']
+        self.data = data_json
+        self.keys = list(data_json.keys())
         self.index_dict = make_index_dict(label_csv)
         self.label_num = len(self.index_dict)
 
@@ -56,13 +57,13 @@ class AudiosetDataset(Dataset):
         self.loader = loader
 
     def __getitem__(self, index):
-        datum = self.data[index]
+        datum = self.data[self.keys[index]]
         label_indices = np.zeros(self.label_num)
-        for label_str in datum['labels'].split(','):
+        for label_str in datum['labels']:
             label_indices[int(self.index_dict[label_str])] = 1.0
         label_indices = torch.FloatTensor(label_indices)
 
-        audio = self.loader(os.path.join(self.audio_root, datum['wav']))
+        audio = self.loader(os.path.join(self.audio_root, datum['path']))
         audio_data = self.transform(audio)
         return audio_data, label_indices
 

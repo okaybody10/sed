@@ -91,7 +91,7 @@ def init_distributed_device(args):
                 init_method=args.dist_url,
                 world_size=args.world_size,
                 rank=args.rank,
-                timeout=datetime.timedelta(seconds=180)
+                timeout=datetime.timedelta(seconds=1800)
             )
         else:
             # DDP via torchrun, torch.distributed.launch
@@ -99,7 +99,7 @@ def init_distributed_device(args):
             torch.distributed.init_process_group(
                 backend='nccl',
                 init_method=args.dist_url,
-                timeout=datetime.timedelta(seconds=180))
+                timeout=datetime.timedelta(seconds=1800))
             args.world_size = torch.distributed.get_world_size()
             args.rank = torch.distributed.get_rank()
         args.distributed = True

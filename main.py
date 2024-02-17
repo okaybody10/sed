@@ -51,9 +51,11 @@ from model.build_model import create_vat_model
 
 LATEST_CHECKPOINT_NAME = "epoch_latest.pt"
 MODEL_DICT = {"ViT-L-14": "laion/CLIP-ViT-L-14-DataComp.XL-s13B-b90K",
-              "ViT-H-14": "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"}
+              "ViT-H-14": "laion/CLIP-ViT-H-14-laion2B-s32B-b79K",
+              "FT": "laion/CLIP-ViT-L-14-DataComp.XL-s13B-b90K"}
 CHECKPOINT_DICT = {"ViT-L-14": "models--laion--CLIP-ViT-L-14-DataComp.XL-s13B-b90K/snapshots/84c9828e63dc9a9351d1fe637c346d4c1c4db341/pytorch_model.bin",
-                   "ViT-H-14": "models--laion--CLIP-ViT-H-14-laion2B-s32B-b79K/snapshots/94a64189c3535c1cb44acfcccd7b0908c1c8eb23/pytorch_model.bin"}
+                   "ViT-H-14": "models--laion--CLIP-ViT-H-14-laion2B-s32B-b79K/snapshots/94a64189c3535c1cb44acfcccd7b0908c1c8eb23/pytorch_model.bin",
+                   "FT": "Finetune_model/pytorch_model.bin"}
 
 
 

@@ -34,13 +34,16 @@ class VAT_dataset(Dataset):
         self.total_text = ['raw', 'mplug', 'polish_mplug', 'sound_mplug'] + [f'ofa{i}' for i in range(8)]
         self.weight = [0.2, 0.2, 0.2, 0.2] + [0.2 / 8] * 8
         self.title = self.text_type == 'raw'
-        self.data_root = '/apdcephfs_cq3/share_1311970/A_Youtube'
+        self.data_root = '/gallery_tate/jaehyuk.sung/sed/datasets/audioset201906/Fast-Audioset-Download'
         if args.clip_type != 'al':
             with open(args.train_data, 'r') as f:
                 self.id2title_folder_caps = json.load(f)
             self.ids = list(self.id2title_folder_caps.keys())[:args.train_num_samples]
         else:
-            self.id2path_cap, self.ids = get_audio_anno()
+            with open(args.train_data, "r") as f :
+                self.id2path_cap = json.load(f)
+            self.ids = list(self.id2path_cap.keys())[:]
+            # self.id2path_cap, self.ids = get_audio_anno()
 
         self.clip_type = args.clip_type
 
@@ -97,10 +100,10 @@ class VAT_dataset(Dataset):
     def get_audio_text(self, idx):
 
         path_cap = self.id2path_cap[self.ids[idx]]
-        audio_path = path_cap['path']
+        audio_path = os.path.join(self.data_root, path_cap['path'])
         audio_data = load_and_transform_audio(audio_path, self.audio_transform)
 
-        caption = path_cap['caption']
+        caption = path_cap['labels']
         if isinstance(caption, list):
             if isinstance(caption[0], str) and len(caption) > 1:
                 caption = random.choice(caption)

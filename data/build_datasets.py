@@ -137,20 +137,6 @@ def get_data(args, epoch=0):
                 data['v_cls'].append({val_v_cls_data: get_video_cls_dataloader(args)})
             args.val_v_cls_data = temp_val_v_cls_data
 
-        if args.val_a_cls_data:
-            temp_audio_mean, temp_audio_std = args.audio_mean, args.audio_std
-            args.audio_mean, args.audio_std = -4.2677393, 4.5689974
-            data["a_cls"] = []
-            data_root = "/apdcephfs_cq3/share_1311970/downstream_datasets/Audio"
-            temp_val_a_cls_data = args.val_a_cls_data
-            for val_a_cls_data in temp_val_a_cls_data:
-                from a_cls.datasets import get_audio_dataset
-                args.val_a_cls_data = val_a_cls_data
-                args.audio_data_path = os.path.join(data_root, f'{val_a_cls_data.lower()}/test')
-                data['a_cls'].append({val_a_cls_data: get_audio_dataset(args)})
-            args.val_a_cls_data = temp_val_a_cls_data
-            args.audio_mean, args.audio_mean = temp_audio_mean, temp_audio_std
-
         if args.val_al_ret_data:
             temp_audio_mean, temp_audio_std = args.audio_mean, args.audio_std
             args.audio_mean, args.audio_std = -4.2677393, 4.5689974
@@ -196,12 +182,12 @@ def get_data(args, epoch=0):
             temp_audio_mean, temp_audio_std = args.audio_mean, args.audio_std
             args.audio_mean, args.audio_std = -4.2677393, 4.5689974
             data["a_cls"] = []
-            data_root = "/apdcephfs_cq3/share_1311970/downstream_datasets/Audio"
+            data_root = "/gallery_tate/jaehyuk.sung/sed/datasets/audioset201906/Fast-Audioset-Download/wavs"
             temp_val_a_cls_data = args.val_a_cls_data
             for val_a_cls_data in temp_val_a_cls_data:
                 from a_cls.datasets import get_audio_dataset
                 args.val_a_cls_data = val_a_cls_data
-                args.audio_data_path = os.path.join(data_root, f'{val_a_cls_data.lower()}/test')
+                args.audio_data_path = os.path.join(data_root, f'{val_a_cls_data.lower()}/eval')
                 data['a_cls'].append({val_a_cls_data: get_audio_dataset(args)})
             args.val_a_cls_data = temp_val_a_cls_data
             args.audio_mean, args.audio_mean = temp_audio_mean, temp_audio_std

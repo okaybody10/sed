@@ -12,14 +12,17 @@ from model.process_clip import add_time_attn_block, convert_model_to_lora, set_g
 from open_clip import convert_weights_to_lp
 from open_clip.transformer import PatchDropout
 from training.distributed import is_master
-
+from languagebind import LanguageBindAudio, LanguageBindAudioTokenizer, LanguageBindAudioProcessor
 
 def SET_GLOBAL_VALUE(k, v):
     set_global_value(k, v)
 
 def create_vat_model(args):
 
+    # config = AutoConfig.from_pretrained(args.model, cache_dir='./cache_dir')
     config = AutoConfig.from_pretrained(args.model, cache_dir=args.cache_dir)
+    # print(args.model)
+    # model = LanguageBindAudio.from_pretrained(args.model, cache_dir=args.cache_dir)
     model = CLIPModel(config, args.num_frames, args.add_time_attn, args.clip_type=='vl_new', args.tube_size)
 
     model.vision_model.patch_dropout = PatchDropout(args.force_patch_dropout)
