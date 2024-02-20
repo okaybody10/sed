@@ -119,7 +119,10 @@ def load_and_transform_audio(
     audio_path,
     transform,
 ):
-    waveform_and_sr = torchaudio_loader(audio_path)
+    if torch.is_tensor(audio_path) :
+        waveform_and_sr = (audio_path, 48000)
+    else :
+        waveform_and_sr = torchaudio_loader(audio_path)
     audio_outputs = transform(waveform_and_sr)
 
     return audio_outputs

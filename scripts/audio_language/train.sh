@@ -16,8 +16,7 @@ srun8 --qos=ilow torchrun --nproc_per_node 8 \
     --lock-text --lock-image --text-type "polish_mplug" \
     --init-temp 0.07 --learn-temp \
     --model "FT" --cache-dir ${CACHE_DIR} \
-    --convert_to_lora --lora_r 16 \
-    --lr 1e-4 --coef-lr 1 \
+    --lr 1e-4 \
     --beta1 0.9 --beta2 0.98 --wd 0.2 --eps 1e-6 \
     --num-frames 1 --force-patch-dropout 0.1 \
     --epochs 16 --batch-size 4 --accum-freq 8 --warmup 2000 \

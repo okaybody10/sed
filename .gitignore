@@ -3,3 +3,8 @@ weights/
 cache_dir/
 *bin*
 datasets/
+*.pt
+*.ipynb
+samples/
+aa.ipynb
+aaa.py
