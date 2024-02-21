@@ -150,9 +150,7 @@ if __name__ == "__main__" :
     prompt = ['exclamation', 'sound effect', 'music', 'speech', 'background noise'] 
     # data = audio_process(r"/gallery_tate/jaehyuk.sung/sed/out.wav", prompt, return_tensors='pt')
     process, audio_duration = batch(args.file, args.split_time)
-    print("Split end here!")
     data = audio_process(process, prompt, return_tensors='pt') # Time
-    print("Data processing end here!")
     # Divides tensors..
     datas = []
     lens = data['pixel_values'].shape[0]
@@ -163,13 +161,11 @@ if __name__ == "__main__" :
         datas.append(add)
     score_matrix = torch.empty((0, len(prompt)), dtype=torch.float32)
     for i, data in enumerate(datas) :
-        print(i)
         with torch.no_grad() :
             results = model(**data)
         score_matrix_part = results.image_embeds @ results.text_embeds.T
         score_matrix = torch.cat((score_matrix, score_matrix_part), 0)
     score_matrix = torch.softmax(score_matrix, dim=-1)
-    print(score_matrix)
     topk_results = torch.topk(score_matrix, args.k, dim=1, sorted=True).indices
     # print(torch.take(prompt, topk_results))
     result = [[prompt[i] for i in topk_result] for topk_result in topk_results]
